@@ -1,8 +1,10 @@
 import axios from 'axios';
 import { useAuthStore } from '@features/auth/model/useAuthStore';
 
+const API_URL = 'http://192.168.10.107:8081/api'
+
 export const api = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL,
+  baseURL: API_URL,
 });
 
 api.interceptors.request.use((config) => {

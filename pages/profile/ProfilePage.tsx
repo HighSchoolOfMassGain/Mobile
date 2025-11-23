@@ -9,6 +9,7 @@ import { clearAuth } from "@/features/auth/lib/tokenStorage";
 import { UIAvatar } from "@/shared/ui/UIAvatar";
 import { ProfileMainInfoCard } from "@/widgets/profile/ProfileMainInfoCard";
 import { ProfileMainInfo } from "@/widgets/profile/ProfileMainInfo";
+import { UIButton } from "@/shared/ui/UIButton";
 
 export const ProfilePage = () => {
   const router = useRouter();
@@ -24,7 +25,7 @@ export const ProfilePage = () => {
     await clearAuth();
     router.replace("/");
   };
-  
+
 
   return (
     <View style={styles.container}>
@@ -41,8 +42,8 @@ export const ProfilePage = () => {
         name={user?.name ?? ""}
         surname={user?.surname ?? ""}
         nickname={user?.nickname ?? undefined}
-        // heightCm={user?.height}
-        // weightKg={user?.weight}
+      // heightCm={user?.height}
+      // weightKg={user?.weight}
       />
       {displayName && (
         <UIText style={styles.subtitle}>Привет, {displayName} 👋</UIText>
@@ -55,6 +56,11 @@ export const ProfilePage = () => {
       )}
 
       <View style={styles.logoutWrapper}>
+        {/*временно для тестирования */}
+        <Button
+          title='статистика'
+          onPress={() => router.push("/statistics")}
+        />
         <Button
           title="Выйти"
           onPress={handleLogout}
