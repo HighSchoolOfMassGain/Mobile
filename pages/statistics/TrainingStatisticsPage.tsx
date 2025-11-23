@@ -29,7 +29,7 @@ export const TrainingStatisticsPage = () => {
   const [activeChart, setActiveChart] = useState<'count' | 'weight'>('count');
 
 
-  const mockExerciseStatistics: ExerciseStatistics = {
+/*   const mockExerciseStatistics: ExerciseStatistics = {
     data: {
       '2025-04-01': 60,
       '2025-04-03': 80,
@@ -41,7 +41,8 @@ export const TrainingStatisticsPage = () => {
       '2025-04-18': 72,
       '2025-04-20': 75,
     },
-  };
+  }; 
+  мок данные для тестирования */
 
   const {
     data: exercises = [],
@@ -103,8 +104,8 @@ export const TrainingStatisticsPage = () => {
           ) : (
             <TrainingStatisticsGraph
               typeData={activeChart}
-              //data={trainingStatsStore.statistics}
-              data={mockExerciseStatistics}
+              data={trainingStatsStore.statistics}
+              //data={mockExerciseStatistics}
             />
           )}
         </>
