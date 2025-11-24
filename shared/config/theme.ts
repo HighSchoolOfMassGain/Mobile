@@ -2,9 +2,12 @@ import type { ColorValue } from 'react-native';
 
 export const palette = {
   grey: '#BCBBBB',
+  textGrey: '#7A7171',
+  borderGrey: '#BABABB',
   black: '#1C1C1E',
   totalBlack: '#000000',
   white: '#FFFFFF',
+  gradWhite: '#E5E5EA',
   blue: '#9ECCFF80',
   darkBlue: '#007AFF',
   border: '#D1D1D2',
