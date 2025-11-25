@@ -10,19 +10,19 @@ import { TrainingStatisticsMenu } from '@/widgets/statistics/trainingStatistics/
 import { TrainingStatisticsGraph } from '@/widgets/statistics/trainingStatistics/TrainingStatisticsGraph';
 import { UISelect } from '@/shared/ui/UISelector';
 
-import { useAuthStore } from '@/features/auth/model/useAuthStore';
 import { useTrainingStatisticsStore } from '@/features/statistics/trainingStatistics/model/useTrainingStatisticsStore';
 import { useExercisesFromLib } from '@/features/statistics/trainingStatistics/hooks/useExercisesFromLib';
 import { useTrainingStatistics } from '@/features/statistics/trainingStatistics/hooks/useTrainingStatistics';
 
-import type { ExerciseFromLib, ExerciseStatistics } from '@/features/statistics/trainingStatistics/model/useTrainingStatisticsStore';
+import type { ExerciseFromLib } from '@/features/statistics/trainingStatistics/model/useTrainingStatisticsStore';
 import type { ExerciseFilter } from '@/features/statistics/trainingStatistics/model/useTrainingStatisticsStore';
 import { BasicHeader } from '@/widgets/basicHeader/BasicHeader';
+import { useCurrentUserStore } from '@/entities/user';
 
 export const TrainingStatisticsPage = () => {
   const router = useRouter();
 
-  const user = useAuthStore((s) => s.user);
+  const user = useCurrentUserStore((s) => s.user);
   const trainingStatsStore = useTrainingStatisticsStore();
 
   const [selectedExercise, setSelectedExercise] = useState<ExerciseFromLib | null>(null);
@@ -67,7 +67,7 @@ export const TrainingStatisticsPage = () => {
 
   return (
     <View style={styles.container}>
-      <BasicHeader onPress={() => router.push("/profile")}/>
+      <BasicHeader onNavigate={() => router.push("/profile")}/>
       <TrainingStatisticsHeader/>
       <View style={styles.menuContainer}>
       {isLoadingExercises ? (

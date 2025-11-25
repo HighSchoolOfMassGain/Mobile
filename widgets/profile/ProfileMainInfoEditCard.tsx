@@ -1,11 +1,11 @@
 import React from "react";
 import { View, StyleSheet, StyleProp, ViewStyle } from "react-native";
 
-import { UIText } from "@/shared/ui/UIText";
-import { UiInput } from "@/shared/ui/UiInput";
 import { UIAvatar } from "@/shared/ui/UIAvatar";
 import { UIButton } from "@/shared/ui/UIButton";
+import { UILabeledInput } from "@/shared/ui/UILabeledInput";
 import { palette } from "@/shared/config/theme";
+import { UIText } from "@/shared/ui/UIText";
 
 interface ProfileMainInfoEditCardProps {
   avatarUri?: string | null;
@@ -14,40 +14,48 @@ interface ProfileMainInfoEditCardProps {
   name: string;
   surname: string;
   nickname: string;
-  height?: string;
-  weight?: string;
+  email: string;
+  telegramUrl: string;
 
   onNameChange: (value: string) => void;
   onSurnameChange: (value: string) => void;
   onNicknameChange: (value: string) => void;
-  onHeightChange?: (value: string) => void;
-  onWeightChange?: (value: string) => void;
+  onEmailChange: (value: string) => void;
+  onTelegramUrlChange: (value: string) => void;
 
   style?: StyleProp<ViewStyle>;
 }
 
-export const ProfileMainInfoEditCard: React.FC<ProfileMainInfoEditCardProps> = ({
+export const ProfileMainInfoEditCard: React.FC<
+  ProfileMainInfoEditCardProps
+> = ({
   avatarUri,
   onAvatarPress,
   name,
   surname,
   nickname,
-  height,
-  weight,
+  email,
+  telegramUrl,
   onNameChange,
   onSurnameChange,
   onNicknameChange,
-  onHeightChange,
-  onWeightChange,
+  onEmailChange,
+  onTelegramUrlChange,
   style,
 }) => {
+  const fullName = `${name} ${surname}`.trim();
+  const avatarLabel = fullName || nickname || undefined;
+
   return (
     <View style={[styles.container, style]}>
-      {/* Аватар + "Изменить фото" */}
       <View style={styles.avatarBlock}>
+        <UIText weight="semibold" style={styles.subtitle}>
+          Редактирование
+        </UIText>
+
         <UIAvatar
           uri={avatarUri ?? null}
-          label={`${name} ${surname}` || nickname || undefined}
+          label={avatarLabel}
           size={96}
           showBorder
           onPress={onAvatarPress}
@@ -59,16 +67,16 @@ export const ProfileMainInfoEditCard: React.FC<ProfileMainInfoEditCardProps> = (
           size="sm"
           fullWidth={false}
           onPress={onAvatarPress}
-          style={styles.changePhotoButton}
+          style={[styles.changePhotoButton, { alignSelf: "center" }]}
         />
       </View>
-
+      <UIText weight="semibold" style={styles.subtitle}>
+        Личные данные
+      </UIText>
       {/* Имя */}
       <View style={styles.fieldBlock}>
-        <UIText weight="semibold" style={styles.label}>
-          Имя
-        </UIText>
-        <UiInput
+        <UILabeledInput
+          label="Имя"
           value={name}
           onChangeText={onNameChange}
           placeholder="Введите имя"
@@ -78,10 +86,8 @@ export const ProfileMainInfoEditCard: React.FC<ProfileMainInfoEditCardProps> = (
 
       {/* Фамилия */}
       <View style={styles.fieldBlock}>
-        <UIText weight="semibold" style={styles.label}>
-          Фамилия
-        </UIText>
-        <UiInput
+        <UILabeledInput
+          label="Фамилия"
           value={surname}
           onChangeText={onSurnameChange}
           placeholder="Введите фамилию"
@@ -91,10 +97,8 @@ export const ProfileMainInfoEditCard: React.FC<ProfileMainInfoEditCardProps> = (
 
       {/* Ник */}
       <View style={styles.fieldBlock}>
-        <UIText weight="semibold" style={styles.label}>
-          Никнейм
-        </UIText>
-        <UiInput
+        <UILabeledInput
+          label="Никнейм"
           value={nickname}
           onChangeText={onNicknameChange}
           placeholder="Например, sportik"
@@ -102,31 +106,27 @@ export const ProfileMainInfoEditCard: React.FC<ProfileMainInfoEditCardProps> = (
         />
       </View>
 
-      {/* Рост / Вес */}
-      <View style={styles.row}>
-        <View style={styles.halfField}>
-          <UIText weight="semibold" style={styles.label}>
-            Рост (см)
-          </UIText>
-          <UiInput
-            value={height}
-            onChangeText={onHeightChange}
-            placeholder="например, 180"
-            keyboardType="numeric"
-          />
-        </View>
+      {/* Email */}
+      <View style={styles.fieldBlock}>
+        <UILabeledInput
+          label="Почта"
+          value={email}
+          onChangeText={onEmailChange}
+          placeholder="you@example.com"
+          keyboardType="email-address"
+          autoCapitalize="none"
+        />
+      </View>
 
-        <View style={styles.halfField}>
-          <UIText weight="semibold" style={styles.label}>
-            Вес (кг)
-          </UIText>
-          <UiInput
-            value={weight}
-            onChangeText={onWeightChange}
-            placeholder="например, 75"
-            keyboardType="numeric"
-          />
-        </View>
+      {/* Ссылка на Telegram */}
+      <View style={styles.fieldBlock}>
+        <UILabeledInput
+          label="Telegram"
+          value={telegramUrl}
+          onChangeText={onTelegramUrlChange}
+          placeholder="https://t.me/username"
+          autoCapitalize="none"
+        />
       </View>
     </View>
   );
@@ -140,7 +140,10 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   avatarBlock: {
+    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
     marginBottom: 4,
     gap: 8,
   },
@@ -150,16 +153,8 @@ const styles = StyleSheet.create({
   fieldBlock: {
     gap: 6,
   },
-  label: {
-    fontSize: 14,
-    color: palette.lightGrey,
-  },
-  row: {
-    flexDirection: "row",
-    gap: 12,
-  },
-  halfField: {
-    flex: 1,
-    gap: 6,
+  subtitle: {
+    color: palette.black,
+    fontSize: 20,
   },
 });

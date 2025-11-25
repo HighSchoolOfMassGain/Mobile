@@ -8,6 +8,7 @@ export const API_ROUTES = {
   login: "/login" as const,
   register: "/register" as const,
   getAuthUserData: "/get_authorized_user_data" as const,
+  updateUser: 'update_user_data' as const,
 };
 
 export const STORAGE_KEYS = {
