@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useQuery } from '@tanstack/react-query';
 
-import { useAuthStore, type AuthUser } from '../model/useAuthStore';
+import { useAuthStore } from '../model/useAuthStore';
 import { STORAGE_KEYS } from '@/shared/config/hz';
 import { getAuthorizedUser } from '../api/authApi';
 import { clearAuth } from '../lib/tokenStorage';
+import { User } from '@/entities/user';
 
 export const useAuthBootstrap = () => {
   const [isReady, setIsReady] = useState(false);
@@ -38,7 +39,7 @@ export const useAuthBootstrap = () => {
   }, [setAccessToken, setStatus]);
 
   // 2. если токен есть — валидируем его и получаем юзера
-  const { data, error, isLoading } = useQuery<AuthUser, Error>({
+  const { data, error, isLoading } = useQuery<User, Error>({
     queryKey: ['authorized-user', accessToken],
     queryFn: getAuthorizedUser,
     enabled: !!accessToken,

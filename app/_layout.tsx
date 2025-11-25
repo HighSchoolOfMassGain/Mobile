@@ -9,6 +9,8 @@ import { useFonts } from "expo-font";
 
 import { useAuthBootstrap } from "@features/auth/hooks/useAuthBootstrap";
 import { theme } from "@shared/config/theme";
+import { attachAuthInterceptor } from "@/features/auth/lib/attachAuthInterceptor";
+import { api } from "@/shared/api/client";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -18,6 +20,7 @@ const queryClient = new QueryClient({
     },
   },
 });
+attachAuthInterceptor(api);
 
 export default function RootLayout() {
   const [fontsLoaded] = useFonts({

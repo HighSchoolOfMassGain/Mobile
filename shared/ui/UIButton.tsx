@@ -18,7 +18,8 @@ type UIButtonVariant =
   | "secondary"
   | "outline"
   | "ghost"
-  | "gradient";
+  | "gradient"
+  | "outline-blue";
 type UIButtonSize = "md" | "sm";
 
 type UIButtonProps = Omit<PressableProps, "style"> & {
@@ -127,8 +128,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   sm: {
-    height: 40,
-    paddingHorizontal: 16,
+    // height: 40,
+    // paddingHorizontal: 16,
   },
   // текст
   textBase: {
@@ -182,6 +183,8 @@ const getTextColor = (variant: UIButtonVariant) => {
       return { color: theme.palette.totalBlack };
     case "outline":
       return { color: theme.palette.lightGrey };
+    case "outline-blue":
+      return { color: theme.palette.darkBlue}
     case "ghost":
     case "gradient":
       return { color: theme.palette.totalBlack };

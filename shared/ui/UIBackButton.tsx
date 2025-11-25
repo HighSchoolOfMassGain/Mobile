@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Image, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import BackButtonIcon from '@/assets/icons/navBackIcon.svg';

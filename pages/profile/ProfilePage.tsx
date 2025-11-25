@@ -2,65 +2,36 @@ import React from "react";
 import { View, StyleSheet, Button } from "react-native";
 import { useRouter } from "expo-router";
 
-import { UIText } from "@shared/ui/UIText";
 import { theme } from "@shared/config/theme";
 import { useAuthStore } from "@features/auth/model/useAuthStore";
 import { clearAuth } from "@/features/auth/lib/tokenStorage";
-import { UIAvatar } from "@/shared/ui/UIAvatar";
-import { ProfileMainInfoCard } from "@/widgets/profile/ProfileMainInfoCard";
-import { ProfileMainInfo } from "@/widgets/profile/ProfileMainInfo";
-import { UIButton } from "@/shared/ui/UIButton";
+import { ProfileHeader } from "@/widgets/profile/ProfileHeader";
 
 export const ProfilePage = () => {
   const router = useRouter();
 
   const user = useAuthStore((s) => s.user);
 
-  const displayName =
-    user?.nickname ||
-    [user?.name, user?.surname].filter(Boolean).join(" ") ||
-    user?.email;
-
   const handleLogout = async () => {
     await clearAuth();
     router.replace("/");
   };
 
-
   return (
     <View style={styles.container}>
-      <UIText weight={"bold"} style={styles.title}>
-        Профиль
-      </UIText>
-      <UIAvatar
-        size="profile"
-        uri={user?.avatar ?? null}
-        label={user?.nickname || `${user?.name} ${user?.surname}`}
-        showBorder
-      />
-      <ProfileMainInfo
+      <ProfileHeader
         name={user?.name ?? ""}
         surname={user?.surname ?? ""}
         nickname={user?.nickname ?? undefined}
-      // heightCm={user?.height}
-      // weightKg={user?.weight}
+        avatarUri={user?.avatar ?? null}
+        onEditProfilePress={() => router.push("/profile/edit")}
+        onChangeCoverPress={() => {
+        }}
       />
-      {displayName && (
-        <UIText style={styles.subtitle}>Привет, {displayName} 👋</UIText>
-      )}
-
-      {!displayName && (
-        <UIText style={styles.subtitle}>
-          Ты авторизован, но данные профиля ещё не подгружены.
-        </UIText>
-      )}
 
       <View style={styles.logoutWrapper}>
-        {/*временно для тестирования */}
-        <Button
-          title='статистика'
-          onPress={() => router.push("/statistics")}
-        />
+        <Button title="статистика" onPress={() => router.push("/statistics")} />
+        <Button title="edit" onPress={() => router.push("/profile/edit")} />
         <Button
           title="Выйти"
           onPress={handleLogout}
@@ -74,7 +45,6 @@ export const ProfilePage = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
     backgroundColor: theme.palette.white,
   },
   title: {

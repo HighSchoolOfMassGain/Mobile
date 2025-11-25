@@ -1,30 +1,15 @@
-// features/auth/model/useAuthStore.ts
 import { create } from 'zustand';
 
-export interface SocialMedia {
-  telegram_url: string | null;
-  vk_url: string | null;
-  youtube_url: string | null;
-}
-
-export interface AuthUser {
-  user_id: number;
-  email: string;
-  name: string;
-  surname: string;
-  nickname: string;
-  avatar: string;
-  social_media: SocialMedia;
-}
+import type { User } from "@entities/user";
 
 export type AuthStatus = 'idle' | 'checking' | 'authenticated' | 'unauthenticated';
 
 interface AuthState {
   accessToken: string | null;
-  user: AuthUser | null;
+  user: User | null;
   status: AuthStatus;
   setAccessToken: (token: string | null) => void;
-  setUser: (user: AuthUser | null) => void;
+  setUser: (user: User | null) => void;
   setStatus: (status: AuthStatus) => void;
   logout: () => void;
 }

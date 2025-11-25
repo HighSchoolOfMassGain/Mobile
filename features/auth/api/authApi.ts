@@ -1,5 +1,5 @@
+import { User } from '@/entities/user/model/types';
 import { api } from '@shared/api/client';
-import type { AuthUser } from '../model/useAuthStore';
 
 export interface LoginPayload {
   email: string;
@@ -28,7 +28,7 @@ export const registerRequest = async (payload: RegisterPayload): Promise<void> =
   await api.post('/register', payload);
 };
 
-export const getAuthorizedUser = async (): Promise<AuthUser> => {
-  const { data } = await api.get<AuthUser>('/get_authorized_user_data');
+export const getAuthorizedUser = async (): Promise<User> => {
+  const { data } = await api.get<User>('/get_authorized_user_data');
   return data;
 };
