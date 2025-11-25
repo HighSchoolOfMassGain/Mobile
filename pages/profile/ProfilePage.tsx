@@ -3,14 +3,14 @@ import { View, StyleSheet, Button } from "react-native";
 import { useRouter } from "expo-router";
 
 import { theme } from "@shared/config/theme";
-import { useAuthStore } from "@features/auth/model/useAuthStore";
 import { clearAuth } from "@/features/auth/lib/tokenStorage";
 import { ProfileHeader } from "@/widgets/profile/ProfileHeader";
+import { useCurrentUserStore } from "@/entities/user";
 
 export const ProfilePage = () => {
   const router = useRouter();
 
-  const user = useAuthStore((s) => s.user);
+  const user = useCurrentUserStore((s) => s.user);
 
   const handleLogout = async () => {
     await clearAuth();
@@ -22,7 +22,7 @@ export const ProfilePage = () => {
       <ProfileHeader
         name={user?.name ?? ""}
         surname={user?.surname ?? ""}
-        nickname={user?.nickname ?? undefined}
+        nickname={user?.nickname ?? ""}
         avatarUri={user?.avatar ?? null}
         onEditProfilePress={() => router.push("/profile/edit")}
         onChangeCoverPress={() => {

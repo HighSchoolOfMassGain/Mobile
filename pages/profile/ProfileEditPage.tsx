@@ -3,14 +3,14 @@ import { View, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
 import { theme } from "@shared/config/theme";
-import { useAuthStore } from "@features/auth/model/useAuthStore";
 import { BasicHeader } from "@/widgets/basicHeader/BasicHeader";
 import { ProfileMainInfoEditCard } from "@/widgets/profile/ProfileMainInfoEditCard";
+import { useCurrentUserStore } from "@/entities/user";
 
 export const ProfileEditPage = () => {
   const router = useRouter();
 
-  const user = useAuthStore((s) => s.user);
+  const user = useCurrentUserStore((s) => s.user);
 
   const [name, setName] = useState(user?.name ?? "");
   const [surname, setSurname] = useState(user?.surname ?? "");

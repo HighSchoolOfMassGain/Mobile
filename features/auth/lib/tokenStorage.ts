@@ -1,22 +1,27 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useAuthStore } from '../model/useAuthStore';
-import { STORAGE_KEYS } from '@/shared/config/hz'; // у тебя тут уже лежит accessToken
+// features/auth/lib/tokenStorage.ts
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-// когда мы успешно залогинились или получили новый валидный токен
+import { useAuthStore } from "../model/useAuthStore";
+import { useCurrentUserStore } from "@entities/user";
+import { STORAGE_KEYS } from "@/shared/config/hz";
+
+// успешный логин / получение нового токена
 export const applyAuth = async (token: string) => {
   const { setAccessToken, setStatus } = useAuthStore.getState();
 
   setAccessToken(token);
-  setStatus('authenticated');
+  setStatus("authenticated");
 
   await AsyncStorage.setItem(STORAGE_KEYS.accessToken, token);
 };
 
-// полный разлогин: чистим store + storage
+// полный разлогин: чистим auth-стор, стор пользователя и storage
 export const clearAuth = async () => {
-  const { logout } = useAuthStore.getState();
+  const { resetAuth } = useAuthStore.getState();
+  const { resetUser } = useCurrentUserStore.getState();
 
-  logout(); // сбрасывает accessToken, user, status
+  resetAuth();
+  resetUser();
 
   await AsyncStorage.removeItem(STORAGE_KEYS.accessToken);
 };

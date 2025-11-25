@@ -1,32 +1,32 @@
-import { create } from 'zustand';
+// features/auth/model/useAuthStore.ts
+import { create } from "zustand";
 
-import type { User } from "@entities/user";
-
-export type AuthStatus = 'idle' | 'checking' | 'authenticated' | 'unauthenticated';
+export type AuthStatus =
+  | "idle"
+  | "checking"
+  | "authenticated"
+  | "unauthenticated";
 
 interface AuthState {
   accessToken: string | null;
-  user: User | null;
   status: AuthStatus;
+
   setAccessToken: (token: string | null) => void;
-  setUser: (user: User | null) => void;
   setStatus: (status: AuthStatus) => void;
-  logout: () => void;
+
+  resetAuth: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set) => ({
   accessToken: null,
-  user: null,
-  status: 'idle',
+  status: "idle",
 
   setAccessToken: (accessToken) => set({ accessToken }),
-  setUser: (user) => set({ user }),
   setStatus: (status) => set({ status }),
 
-  logout: () =>
+  resetAuth: () =>
     set({
       accessToken: null,
-      user: null,
-      status: 'unauthenticated',
+      status: "unauthenticated",
     }),
 }));
