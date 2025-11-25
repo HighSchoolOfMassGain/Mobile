@@ -1,5 +1,4 @@
 import type { AxiosInstance } from 'axios';
-
 import { useAuthStore } from '../model/useAuthStore';
 
 /**
@@ -8,6 +7,7 @@ import { useAuthStore } from '../model/useAuthStore';
  *
  * ВАЖНО: вызывать один раз на уровне инициализации приложения.
  */
+
 let isAttached = false;
 
 export const attachAuthInterceptor = (api: AxiosInstance) => {

@@ -1,6 +1,4 @@
-// features/auth/lib/authStorage.ts
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
 import { useAuthStore } from '../model/useAuthStore';
 import { STORAGE_KEYS } from '@/shared/config/hz'; // у тебя тут уже лежит accessToken
 

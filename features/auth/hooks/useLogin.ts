@@ -6,8 +6,8 @@ import {
   type LoginPayload,
   type LoginResponse,
 } from '../api/authApi';
-import type { ApiError } from '@shared/api/apiError';
 import { applyAuth, clearAuth } from '../lib/tokenStorage';
+import type { ApiError } from '@shared/api/apiError';
 
 export const useLogin = () => {
   const setStatus = useAuthStore((s) => s.setStatus);

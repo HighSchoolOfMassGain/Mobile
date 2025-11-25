@@ -7,7 +7,7 @@ export const ROUTES = {
 export const API_ROUTES = {
   login: "/login" as const,
   register: "/register" as const,
-  profile: "/profile" as const,
+  getAuthUserData: "/get_authorized_user_data" as const,
 };
 
 export const STORAGE_KEYS = {
