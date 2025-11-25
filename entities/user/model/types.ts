@@ -1,4 +1,3 @@
-
 export type UserId = number;
 
 export interface UserSocialMedia {

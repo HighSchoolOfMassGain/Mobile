@@ -9,14 +9,14 @@ import {
 
 import { UIAvatar } from "@shared/ui/UIAvatar";
 import { UIText } from "@shared/ui/UIText";
-import { ProfileMainInfo } from "@widgets/profile/ProfileMainInfo";
+import { ProfileMainInfo } from "@/entities/user";
 import { UIIcon } from "@shared/ui/UIIcon";
 import { palette } from "@/shared/config/theme";
 
 interface ProfileHeaderProps {
   name: string;
   surname: string;
-  nickname?: string | null;
+  nickname: string;
   avatarUri?: string | null;
 
   style?: StyleProp<ViewStyle>;
@@ -70,11 +70,7 @@ export const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         </View>
 
         <View style={styles.infoWrapper}>
-          <ProfileMainInfo
-            name={name}
-            surname={surname}
-            nickname={nickname}
-          />
+          <ProfileMainInfo user={{ name, surname, nickname }} />
         </View>
 
         <View style={styles.chevronWrapper}>
