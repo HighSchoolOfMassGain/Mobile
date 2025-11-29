@@ -2,24 +2,25 @@
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ["babel-preset-expo"],
     plugins: [
+      require.resolve("expo-router/babel"),   // желательно оставить это
       [
-        'module-resolver',
+        "module-resolver",
         {
-          root: ['./'],
+          root: ["./"],
           alias: {
-            '@': './',
-            '@app': './app',
-            '@pages': './pages',
-            '@widgets': './widgets',
-            '@features': './features',
-            '@entities': './entities',
-            '@shared': './shared',
+            "@shared": "./src/shared",
+            "@pages": "./src/pages",
+            "@features": "./src/features",
+            "@widgets": "./src/widgets",
+            "@entities": "./src/entities",
+            "@app": "./src/app",
+            "@assets": "./assets",
           },
         },
       ],
-      'react-native-reanimated/plugin', // ВАЖНО: последним
+      "react-native-reanimated/plugin", // последним
     ],
   };
 };
