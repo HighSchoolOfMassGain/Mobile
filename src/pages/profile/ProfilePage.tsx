@@ -29,15 +29,14 @@ export const ProfilePage = () => {
         }}
       />
 
-      {/* <View style={styles.logoutWrapper}>
+      <View style={styles.logoutWrapper}>
         <Button title="статистика" onPress={() => router.push("/statistics")} />
-        <Button title="edit" onPress={() => router.push("/profile/edit")} />
         <Button
           title="Выйти"
           onPress={handleLogout}
           color={theme.palette.red}
         />
-      </View> */}
+      </View>
     </View>
   );
 };
