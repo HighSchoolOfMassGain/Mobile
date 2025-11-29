@@ -3,7 +3,7 @@
   "compilerOptions": {
     "strict": true,
     "jsx": "react-jsx",
-    "baseUrl": ".",               // добавь ЭТО
+    "baseUrl": ".",
     "paths": {
       "@app/*": ["src/app/*"],
       "@pages/*": ["src/pages/*"],
