@@ -1,70 +1,85 @@
-import { useEffect, useState } from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useQuery } from '@tanstack/react-query';
+// features/auth/hooks/useAuthBootstrap.ts
+import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useQuery } from "@tanstack/react-query";
 
-import { useAuthStore, type AuthUser } from '../model/useAuthStore';
-import { STORAGE_KEYS } from '@/shared/config/hz';
-import { getAuthorizedUser } from '../api/authApi';
-import { clearAuth } from '../lib/tokenStorage';
+import { useAuthStore } from "../model/useAuthStore";
+import { getAuthorizedUser } from "../api/authApi";
+import { clearAuth } from "../lib/tokenStorage";
+import { useCurrentUserStore } from "@entities/user";
+import type { User } from "@entities/user";
+import type { ApiError } from "@shared/api/apiError";
+import { STORAGE_KEYS } from "@/shared/config/hz";
 
 export const useAuthBootstrap = () => {
   const [isReady, setIsReady] = useState(false);
 
   const accessToken = useAuthStore((s) => s.accessToken);
   const setAccessToken = useAuthStore((s) => s.setAccessToken);
-  const setUser = useAuthStore((s) => s.setUser);
   const setStatus = useAuthStore((s) => s.setStatus);
+  const setUser = useCurrentUserStore((s) => s.setUser);
 
-  // 1. достаём токен
+  // 1. читаем токен из AsyncStorage при старте
   useEffect(() => {
-    const restoreToken = async () => {
+    const init = async () => {
       try {
-        const token = await AsyncStorage.getItem(STORAGE_KEYS.accessToken);
+        const tokenFromStorage = await AsyncStorage.getItem(
+          STORAGE_KEYS.accessToken,
+        );
 
-        if (token) {
-          setAccessToken(token);
-          setStatus('checking');
+        if (tokenFromStorage) {
+          setAccessToken(tokenFromStorage);
+          setStatus("checking");
         } else {
-          setStatus('unauthenticated');
+          setStatus("unauthenticated");
         }
-      } catch {
-        setStatus('unauthenticated');
+      } catch (e) {
+        setStatus("unauthenticated");
+        console.log(e);
       } finally {
         setIsReady(true);
       }
     };
 
-    restoreToken();
+    void init();
   }, [setAccessToken, setStatus]);
 
-  // 2. если токен есть — валидируем его и получаем юзера
-  const { data, error, isLoading } = useQuery<AuthUser, Error>({
-    queryKey: ['authorized-user', accessToken],
+  // 2. если токен есть — тянем /get_authorized_user_data
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery<User, ApiError>({
+    queryKey: ["authorizedUser"],
     queryFn: getAuthorizedUser,
     enabled: !!accessToken,
-    retry: false,
+    retry: 1,
   });
 
+  // успешная загрузка пользователя
   useEffect(() => {
     if (!accessToken) return;
-    if (!data) return;
+    if (!user) return;
 
-    setUser(data);
-    setStatus('authenticated');
-  }, [data, accessToken, setUser, setStatus]);
+    setUser(user);
+    setStatus("authenticated");
+  }, [user, accessToken, setUser, setStatus]);
 
-  // 3. если /me упал — считаем токен протухшим и чистим авторизацию
+  // ошибка при загрузке пользователя
   useEffect(() => {
     if (!accessToken) return;
     if (!error) return;
 
-    clearAuth().catch(() => {
-      // можно залогировать, если захочешь
-    });
+    void clearAuth();
   }, [error, accessToken]);
 
   const status = useAuthStore((s) => s.status);
-  const isAuthChecking = status === 'checking' || (!!accessToken && isLoading);
+  const isAuthChecking = status === "checking" || (!!accessToken && isLoading);
 
-  return { isReady, isAuthChecking, status, accessToken };
+  return {
+    isReady,
+    isAuthChecking,
+    status,
+    accessToken,
+  };
 };

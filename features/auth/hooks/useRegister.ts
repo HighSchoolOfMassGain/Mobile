@@ -2,8 +2,8 @@ import { Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { useMutation } from "@tanstack/react-query";
 
-import { getApiErrorMessage, type ApiError } from "@shared/api/apiError";
 import { registerRequest, type RegisterPayload } from "../api/authApi";
+import { getApiErrorMessage, type ApiError } from "@shared/api/apiError";
 import { ROUTES } from "@/shared/config/hz";
 
 export const useRegister = () => {

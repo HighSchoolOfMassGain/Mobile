@@ -6,7 +6,7 @@ import BurgerIcon from '../../assets/icons/navBurderIcon.svg';
 import CloseIcon from '../../assets/icons/closeBurgerIcon.svg';
 import LinkIcon from '../../assets/icons/linkIcon.svg';
 import TgIcon from "../../assets/icons/tgIcon.svg";
-
+import ChevronRightIcon from "../../assets/icons/chevronRightIcon.svg";
 import { theme } from '@shared/config/theme';
 
 const ICONS = {
@@ -14,7 +14,8 @@ const ICONS = {
   burger: BurgerIcon,
   close: CloseIcon,
   link: LinkIcon,
-  tg: TgIcon
+  tg: TgIcon,
+  chevr: ChevronRightIcon,
 } as const;
 
 export type IconName = keyof typeof ICONS;
