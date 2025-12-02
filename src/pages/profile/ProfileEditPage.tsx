@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { useRouter } from "expo-router";
 
 import { theme } from "@shared/config/theme";
@@ -21,7 +21,7 @@ export const ProfileEditPage = () => {
   const [nickname, setNickname] = useState(user?.nickname ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
   const [telegramUrl, setTelegramUrl] = useState(
-    user?.social_media.telegram_url ?? "",
+    user?.social_media.telegram_url ?? ""
   );
 
   // если user придёт асинхронно в стор, синхронизируем форму
@@ -68,29 +68,26 @@ export const ProfileEditPage = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <BasicHeader
-        type="withSave"
-        onSave={handleSave}
-      />
+      <ScrollView style={styles.container}>
+        <BasicHeader type="withSave" onSave={handleSave} />
 
-      <ProfileMainInfoEditCard
-        style={{ marginTop: 16 }}
-        avatarUri={user.avatar ?? null}
-        onAvatarPress={handleAvatarPress}
-        name={name}
-        surname={surname}
-        nickname={nickname}
-        email={email}
-        telegramUrl={telegramUrl}
-        onNameChange={setName}
-        onSurnameChange={setSurname}
-        onNicknameChange={setNickname}
-        onEmailChange={setEmail}
-        onTelegramUrlChange={setTelegramUrl}
-      />
-      {/* при желании: индикатор сохранения, ошибки и т.д. */}
-    </View>
+        <ProfileMainInfoEditCard
+          style={{ marginTop: 16 }}
+          avatarUri={user.avatar ?? null}
+          onAvatarPress={handleAvatarPress}
+          name={name}
+          surname={surname}
+          nickname={nickname}
+          email={email}
+          telegramUrl={telegramUrl}
+          onNameChange={setName}
+          onSurnameChange={setSurname}
+          onNicknameChange={setNickname}
+          onEmailChange={setEmail}
+          onTelegramUrlChange={setTelegramUrl}
+        />
+        {/* при желании: индикатор сохранения, ошибки и т.д. */}
+      </ScrollView>
   );
 };
 

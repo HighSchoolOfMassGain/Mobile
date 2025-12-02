@@ -1,70 +1,46 @@
-// import React, { useEffect, useState } from "react";
-// import { Slot, useSegments } from "expo-router";
-// import { View, StatusBar } from "react-native";
-// import { theme } from "@shared/config/theme";
-// import { Screen } from "@shared/ui/Screen";
-// import { Header } from "@widgets/header/Header";
-// import { MenuOverlay } from "@widgets/menu/MenuOverlay";
-// import { AppFooter } from "@widgets/footer/AppFooter";
-
-// export default function AppLayout() {
-//   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-//   const handleToggleMenu = () => setIsMenuOpen((prev) => !prev);
-//   const handleCloseMenu = () => setIsMenuOpen(false);
-//   const segments = useSegments();
-
-//   useEffect(() => {
-//     setIsMenuOpen(false);
-//   }, [segments]);
-//   return (
-//     <View style={{ flex: 1, backgroundColor: theme.palette.totalBlack }}>
-//       {/* <StatusBar
-//         barStyle="light-content"
-//         backgroundColor={theme.palette.totalBlack}
-//       /> */}
-
-//       <Header isMenuOpen={isMenuOpen} onBurgerPress={handleToggleMenu} />
-
-//       <Screen>
-//         <Slot />
-//       </Screen>
-//       <AppFooter />
-
-//       {isMenuOpen && <MenuOverlay onClose={handleCloseMenu} />}
-//     </View>
-//   );
-// }
-
-// app/(app)/_layout.tsx
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import { Slot } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 import { Header } from "@widgets/header/Header";
 import { AppFooter } from "@widgets/footer/AppFooter";
+import { MenuOverlay } from "@widgets/menu/MenuOverlay";
 
 export default function AppLayout() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const insets = useSafeAreaInsets();
+
   const handleToggleMenu = () => setIsMenuOpen((prev) => !prev);
-  // const handleCloseMenu = () => setIsMenuOpen(false);
+  const handleCloseMenu = () => setIsMenuOpen(false);
+
   return (
     <View style={styles.root}>
-      {/* Хедер под статусбаром */}
+      {/* Header */}
       <SafeAreaView edges={["top", "left", "right"]} style={styles.headerSafe}>
         <Header isMenuOpen={isMenuOpen} onBurgerPress={handleToggleMenu} />
       </SafeAreaView>
 
-      {/* Контент экрана */}
-      <View style={styles.content}>
+      {/* Scrollable content */}
+      <ScrollView
+        contentContainerStyle={[
+          styles.content,
+          { paddingBottom: insets.bottom },
+        ]}
+      >
         <Slot />
-      </View>
+      </ScrollView>
 
-      {/* Футер с учётом нижней safe-area */}
+      {/* Footer */}
       <SafeAreaView edges={["bottom"]} style={styles.footerSafe}>
         <AppFooter />
       </SafeAreaView>
+
+      {/* Menu overlay поверх всего */}
+      {isMenuOpen && <MenuOverlay onClose={handleCloseMenu} />}
     </View>
   );
 }
@@ -75,11 +51,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#000",
   },
   headerSafe: {
-    // фон под хедером, обычно тот же, что у хедера
     backgroundColor: "#000",
   },
   content: {
-    flex: 1,
+    flexGrow: 1,      // чтобы контент растягивался и скролл работал нормально
+    minHeight: "100%",
     backgroundColor: "#fff",
   },
   footerSafe: {

@@ -37,7 +37,7 @@ export const AppFooter: React.FC = () => {
   );
 };
 
-const FOOTER_HEIGHT = 64;
+export const FOOTER_HEIGHT = 64;
 
 const styles = StyleSheet.create({
   wrapper: {
